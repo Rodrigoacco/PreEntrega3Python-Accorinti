@@ -15,10 +15,9 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from entregaAccorinti.views import saludo, probandoTemplate
+from .views import agregar_libro, buscar_libro
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
-    path('saludo/', saludo),
-    path('probandoTemplate', probandoTemplate)
+    path('agregar-libro/', agregar_libro, name='agregar_libro'),
+    path('buscar-libro/', buscar_libro, name='buscar_libro'),
 ]

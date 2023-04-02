@@ -1,24 +1,22 @@
-from datetime import datetime as dt
-from django.template import Template, Context, loader
-from django.http import HttpResponse
+from django.shortcuts import render
+from .forms import LibroForm
 
-def saludo (request):
-    return HttpResponse("hola")
+def agregar_libro(request):
+    if request.method == 'POST':
+        form = LibroForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('agregar_libro')
+    else:
+        form = LibroForm()
+    return render(request, 'agregar_libro.html', {'form': form})
 
-def dia(request):
-    hoy=dt.now()
-    return HttpResponse(f"el dia de hoy es: {hoy}")
-
-def probandoTemplate(request):
-    
-    mis_datos = {"nombre": "Esteban"}
-    # mihtml = open("./templates/template1.html")
-    # plantilla = Template(mihtml.read())
-    # mihtml.close()
-    
-    plantilla = loader.get_template("template1.html")
-
-    # mi_contexto = Context()
-
-    documento = plantilla.render(mis_datos)
-    return HttpResponse(documento)
+def buscar_libro(request):
+    if request.method == 'POST':
+        form = BuscarLibroForm(request.POST)
+        if form.is_valid():
+            libros = form.buscar()
+            return render(request, 'resultado_busqueda.html', {'libros': libros})
+    else:
+        form = BuscarLibroForm()
+    return render(request, 'buscar_libro.html', {'form': form})
